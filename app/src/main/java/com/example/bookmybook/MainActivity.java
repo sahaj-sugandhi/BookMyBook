@@ -36,16 +36,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent=null;
         switch(item.getItemId()){
             case R.id.uploadMenuOption:
-                Intent intent=new Intent(this,UploadBookActivity.class);
+                intent=new Intent(this,UploadBookActivity.class);
                 startActivity(intent);
                 break;
             case R.id.manageUploadsMenuOption:
-                Toast.makeText(this, "Manage Your Uploaded Books", Toast.LENGTH_SHORT).show();
+                intent=new Intent(this,MainActivity.class);
+                startActivity(intent);
                 break;
             case R.id.signOutMenuOption:
                 Toast.makeText(this, "SignOut Successful", Toast.LENGTH_SHORT).show();
+                intent=new Intent(this,LoginActivity.class);
+                startActivity(intent);
+                finish();
         }
         return true;
     }

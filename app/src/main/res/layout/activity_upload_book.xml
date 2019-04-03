@@ -128,6 +128,17 @@
         android:text="Book Cover Picture"
         android:textColor="#000"/>
 
+    <Button
+        android:id="@+id/bookPhotoUploadButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bookPhotoUploadView"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:text="Upload Picture From Gallery"/>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/uploadBookConfirm"
         android:layout_width="wrap_content"
