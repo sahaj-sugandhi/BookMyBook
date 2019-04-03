@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/searchBarFroAll"
+        android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -15,9 +15,10 @@
         android:inputType="textPersonName" />
 
     <ListView
+        android:id="@+id/listingBooks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/searchBarFroAll"/>
+        android:layout_below="@+id/searchBar"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/chat"
