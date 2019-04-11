@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:layout_margin="50dp"
+        android:layout_margin="15dp"
         android:textSize="30dp"
         android:textColor="#000"
         android:text="SignUp" />
@@ -24,7 +24,7 @@
         android:text="Email"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:textColor="#000"/>
 
     <EditText
@@ -42,10 +42,35 @@
         tools:layout_editor_absoluteY="16dp" />
 
     <TextView
-        android:id="@+id/passwordSignupView"
+        android:id="@+id/nameSignupView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/emailSignupField"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="10dp"
+        android:text="Full Name"
+        android:textColor="#000"/>
+
+    <EditText
+        android:id="@+id/nameSignupField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameSignupView"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="Enter Full Name"
+        android:inputType="text"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="82dp" />
+
+    <TextView
+        android:id="@+id/passwordSignupView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameSignupField"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="10dp"
@@ -134,7 +159,7 @@
         android:layout_below="@id/branchSignupView"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
         android:ems="10" />
 
     <Button

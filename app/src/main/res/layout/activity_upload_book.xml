@@ -99,7 +99,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="10dp"
-        android:text="Quoted Price"
+        android:text="Price"
         android:textColor="#000"/>
 
     <EditText
@@ -137,7 +137,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:text="Upload Picture From Gallery"/>
+        android:text="Upload Picture From Gallery"
+        android:onClick="getPhotoFromDevice"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/uploadBookConfirm"
@@ -151,6 +152,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/colorAccent"
-        android:src="@drawable/upload" />
+        android:src="@drawable/upload"
+        android:onClick="uploadBookButtonConfirm"/>
 
 </RelativeLayout>

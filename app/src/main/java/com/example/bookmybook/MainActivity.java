@@ -1,23 +1,47 @@
 package com.example.bookmybook;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookmybook.data.BookInfo;
+import com.example.bookmybook.data.LocalStorageSharedPreferences;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+
+    ChildEventListener childEventListener=null;
+    ArrayList<String> listOfStoredBooks;
+    ArrayList<BookInfo> bookList;
+    ListView listView;
+    TextView fetching;
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         FloatingActionButton chat = findViewById(R.id.chat);
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Chatting is on its way", Snackbar.LENGTH_LONG).show();
             }
         });
+        listOfStoredBooks=new ArrayList<>();
+        bookList=new ArrayList<>();
+        attachDatabaseReadListener();
+        setArrayAdapterForBooks();
     }
 
     @Override
@@ -47,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.signOutMenuOption:
+                FirebaseAuth.getInstance().signOut();
+                LocalStorageSharedPreferences.removeLoggedUser(MainActivity.this);
                 Toast.makeText(this, "SignOut Successful", Toast.LENGTH_SHORT).show();
                 intent=new Intent(this,LoginActivity.class);
                 startActivity(intent);
@@ -54,4 +84,61 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    public void attachDatabaseReadListener(){
+        if(childEventListener==null){
+            childEventListener=new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    BookInfo bookInfo=dataSnapshot.getValue(BookInfo.class);
+                    listOfStoredBooks.add(bookInfo.name+" by "+bookInfo.authorName+" @Rs."+bookInfo.price);
+                    bookList.add(bookInfo);
+                    //printArrayList();
+                    setArrayAdapterForBooks();
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            FirebaseDatabase.getInstance().getReference().child("books").addChildEventListener(childEventListener);
+        }
+    }
+    public void setArrayAdapterForBooks(){
+        listView=findViewById(R.id.listingBooks);
+        arrayAdapter=new ArrayAdapter<>(this,android.R.layout.simple_expandable_list_item_1,listOfStoredBooks);
+        listView.setAdapter(arrayAdapter);
+        fetching=findViewById(R.id.fetchingTextView);
+        listView.setEmptyView(fetching);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(MainActivity.this, "With Book: "+bookList.get(position), Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(MainActivity.this,ViewBookActivity.class);
+                intent.putExtra("BookToShow",bookList.get(position));
+                startActivity(intent);
+            }
+        });
+    }
+    /*private void printArrayList(){
+        for (int i=0;i<listOfStoredBooks.size();i++){
+            Log.i("MyLogsBookList",listOfStoredBooks.get(i));
+        }
+    }*/
 }

@@ -20,6 +20,14 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/searchBar"/>
 
+    <TextView
+        android:id="@+id/fetchingTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No books available to show to you, we will get update you on getting books"
+        android:textAlignment="center" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/chat"
         android:layout_width="wrap_content"

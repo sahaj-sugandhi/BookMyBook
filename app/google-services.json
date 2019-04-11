@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "24221874275",
+    "firebase_url": "https://bookmybook-2dfcb.firebaseio.com",
+    "project_id": "bookmybook-2dfcb",
+    "storage_bucket": "bookmybook-2dfcb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24221874275:android:c8041d1b6239e751",
+        "android_client_info": {
+          "package_name": "com.example.bookmybook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24221874275-t0k9oi5nd6ksno1k1p4cv2h577ct1g3v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bookmybook",
+            "certificate_hash": "5a1047b780aa6348a1252d8a02717ce9938cb5dc"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6sZ8-hpufbZMj7QvF7azfJyCktAEGGmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24221874275-eoqe2r00jr3turho90g6k0k4p4593d7a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
