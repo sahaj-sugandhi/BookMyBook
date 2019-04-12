@@ -1,6 +1,7 @@
 package com.example.bookmybook;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +46,7 @@ public class ViewBookActivity extends AppCompatActivity {
     ImageView coverPhoto;
     ChildEventListener childEventListener=null;
     String nameOfUploader;
+    String keyValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +63,55 @@ public class ViewBookActivity extends AppCompatActivity {
         //coverPhoto.setImageBitmap(getBitmapFromURL(bookInfo.photoUrl));
         attachDatabaseReadListener();
         FloatingActionButton fab = findViewById(R.id.chatOrDelete);
+        Intent intent=this.getIntent();
+        keyValue="";
+        if(intent!=null) keyValue=intent.getStringExtra("keyValue");
         Bundle bundle=getIntent().getExtras();
-        int flag=bundle.getInt("Flag");
+        final int flag=bundle.getInt("Flag");
         if(flag==MainActivity.USERS_BOOKS_FLAG) fab.setImageDrawable(ContextCompat.getDrawable(ViewBookActivity.this, R.drawable.delete));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ViewBookActivity.this, "This will be deleted", Toast.LENGTH_SHORT).show();
+                if(flag==MainActivity.USERS_BOOKS_FLAG) confirmDelete();
+                else Toast.makeText(ViewBookActivity.this, "Chatting", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void confirmDelete(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ViewBookActivity.this);
+        // Set the message show for the Alert time
+        builder.setMessage("Do you want to Remove this book?");
+        // Set Alert Title
+        builder.setTitle("Delete Confirmation!");
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ViewBookActivity.this, "Removing this book", Toast.LENGTH_SHORT).show();
+                FirebaseDatabase.getInstance().getReference().child("books").child(keyValue).removeValue();
+                finish();
+            }
+        });
+        // Set the Negative button with No name
+        // OnClickListener method is use
+        // of DialogInterface interface.
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ViewBookActivity.this, "Keeping book back to shelves", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+        // Show the Alert Dialog box
+        alertDialog.show();
     }
 
     public void setValuesToView(){

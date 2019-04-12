@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ChildEventListener childEventListener=null;
-    ArrayList<String> listOfStoredBooks;
+    ArrayList<String> listOfStoredBooks, keysList;
     ArrayList<BookInfo> bookList;
     ListView listView;
     TextView fetching;
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         //listType=bundle.getString("List Type");
         listOfStoredBooks=new ArrayList<>();
         bookList=new ArrayList<>();
+        keysList=new ArrayList<>();
         if("User's Books".equals(listType)) {
             attachDatabaseReadListenerForUsersBooks();
             flagToSend=USERS_BOOKS_FLAG;
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     BookInfo bookInfo=dataSnapshot.getValue(BookInfo.class);
                     listOfStoredBooks.add(bookInfo.name+" by "+bookInfo.authorName+" @Rs."+bookInfo.price);
                     bookList.add(bookInfo);
+                    keysList.add(dataSnapshot.getKey());
                     //printArrayList();
                     setArrayAdapterForBooks();
                 }
@@ -149,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(MainActivity.this,ViewBookActivity.class);
                 intent.putExtra("BookToShow",bookList.get(position));
                 intent.putExtra("Flag",flagToSend);
+                intent.putExtra("keyValue",keysList.get(position));
                 startActivity(intent);
             }
         });
@@ -163,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
                     if(bookInfo.uploadedBy.equals(userID)) {
                         listOfStoredBooks.add(bookInfo.name + " by " + bookInfo.authorName + " @Rs." + bookInfo.price);
                         bookList.add(bookInfo);
+                        keysList.add(dataSnapshot.getKey());
                         //printArrayList();
                         setArrayAdapterForBooks();
                     }
