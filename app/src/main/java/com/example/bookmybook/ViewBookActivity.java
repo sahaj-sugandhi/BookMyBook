@@ -124,6 +124,7 @@ public class ViewBookActivity extends AppCompatActivity {
                 .load(bookInfo.photoUrl)
                 .into(coverPhoto);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater= getMenuInflater();
@@ -156,6 +157,7 @@ public class ViewBookActivity extends AppCompatActivity {
         }
         return true;
     }
+
     public void attachDatabaseReadListener(){
         if(childEventListener==null){
             childEventListener=new ChildEventListener() {
