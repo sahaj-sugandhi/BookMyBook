@@ -162,7 +162,7 @@
             tools:layout_editor_absoluteY="82dp" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/uploadBookConfirm"
+        android:id="@+id/chatOrDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

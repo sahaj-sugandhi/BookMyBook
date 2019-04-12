@@ -81,6 +81,7 @@ public class UploadBookActivity extends AppCompatActivity {
                 break;
             case R.id.manageUploadsMenuOption:
                 intent=new Intent(this,MainActivity.class);
+                intent.putExtra("List Type","User's Books");
                 startActivity(intent);
                 finish();
                 break;

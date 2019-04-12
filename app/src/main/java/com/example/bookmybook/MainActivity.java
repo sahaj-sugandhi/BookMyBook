@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     TextView fetching;
     ArrayAdapter<String> arrayAdapter;
+    final static int ALL_BOOKS_FLAG=0;
+    final static int USERS_BOOKS_FLAG=1;
+    int flagToSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +52,21 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Chatting is on its way", Snackbar.LENGTH_LONG).show();
             }
         });
+        Intent intent=this.getIntent();
+        String listType="";
+        if(intent!=null) listType=intent.getStringExtra("List Type");
+        //Bundle bundle=getIntent().getExtras();
+        //listType=bundle.getString("List Type");
         listOfStoredBooks=new ArrayList<>();
         bookList=new ArrayList<>();
-        attachDatabaseReadListener();
+        if("User's Books".equals(listType)) {
+            attachDatabaseReadListenerForUsersBooks();
+            flagToSend=USERS_BOOKS_FLAG;
+        }
+        else {
+            attachDatabaseReadListenerForAllBooks();
+            flagToSend=ALL_BOOKS_FLAG;
+        }
         setArrayAdapterForBooks();
     }
 
@@ -72,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.manageUploadsMenuOption:
                 intent=new Intent(this,MainActivity.class);
+                intent.putExtra("List Type","User's Books");
                 startActivity(intent);
                 break;
             case R.id.signOutMenuOption:
@@ -85,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void attachDatabaseReadListener(){
+    public void attachDatabaseReadListenerForAllBooks(){
         if(childEventListener==null){
             childEventListener=new ChildEventListener() {
                 @Override
@@ -132,9 +148,51 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(MainActivity.this, "With Book: "+bookList.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(MainActivity.this,ViewBookActivity.class);
                 intent.putExtra("BookToShow",bookList.get(position));
+                intent.putExtra("Flag",flagToSend);
                 startActivity(intent);
             }
         });
+    }
+    public void attachDatabaseReadListenerForUsersBooks(){
+        if(childEventListener==null){
+            final String userID=LocalStorageSharedPreferences.getLoggedUser(MainActivity.this);
+            childEventListener=new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    BookInfo bookInfo=dataSnapshot.getValue(BookInfo.class);
+                    if(bookInfo.uploadedBy.equals(userID)) {
+                        listOfStoredBooks.add(bookInfo.name + " by " + bookInfo.authorName + " @Rs." + bookInfo.price);
+                        bookList.add(bookInfo);
+                        //printArrayList();
+                        setArrayAdapterForBooks();
+                    }
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            FirebaseDatabase.getInstance().getReference().child("books").addChildEventListener(childEventListener);
+        }
+        else {
+            Log.i("MyLogs","Object is not null");
+        }
     }
     /*private void printArrayList(){
         for (int i=0;i<listOfStoredBooks.size();i++){

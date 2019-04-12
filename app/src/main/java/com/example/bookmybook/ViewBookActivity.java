@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +59,16 @@ public class ViewBookActivity extends AppCompatActivity {
         coverPhoto=findViewById(R.id.bookPhotoDetails);
         //coverPhoto.setImageBitmap(getBitmapFromURL(bookInfo.photoUrl));
         attachDatabaseReadListener();
+        FloatingActionButton fab = findViewById(R.id.chatOrDelete);
+        Bundle bundle=getIntent().getExtras();
+        int flag=bundle.getInt("Flag");
+        if(flag==MainActivity.USERS_BOOKS_FLAG) fab.setImageDrawable(ContextCompat.getDrawable(ViewBookActivity.this, R.drawable.delete));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ViewBookActivity.this, "This will be deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setValuesToView(){
@@ -85,6 +99,7 @@ public class ViewBookActivity extends AppCompatActivity {
                 break;
             case R.id.manageUploadsMenuOption:
                 intent=new Intent(this,MainActivity.class);
+                intent.putExtra("List Type","User's Books");
                 startActivity(intent);
                 finish();
                 break;
